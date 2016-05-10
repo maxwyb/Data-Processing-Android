@@ -10,6 +10,7 @@
     tools:context="com.ucla.max.androiddata.MainActivity">
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,4 +20,10 @@
         android:layout_height="wrap_content"
         android:text="@string/button_run"
         android:onClick="runSimulation" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hello Android!" />
 </LinearLayout>
