@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         sendDataToServer();
         updateTextView2(result);
+        receiveResultFromServer();
     }
 
     public static void updateTextView2(String str) {
