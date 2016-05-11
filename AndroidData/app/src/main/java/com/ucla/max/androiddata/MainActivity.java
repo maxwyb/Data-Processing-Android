@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         // os.println(line);
                         // Log.d("sunnyDay", "Echoed the message from client.");
 
-                        result = line; // received the String from Android for temperature data
+                        result = line; // received the String from PC for result
                         Log.d("sunnyDay", result);
                         Log.d("sunnyDay", "Received analysis result. Closing server...");
                         break;
