@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
     public static String temperature = ""; // a parsed String to send temperature data to server
     public static String result = ""; // the analysis result coming from server
 
-    public static String PC_IP = "131.179.30.165";
+    public static String PC_IP = "131.179.30.195";
     public static String ANDROID_IP = "131.179.45.16";
-    public static Integer PORT = 9930;
+    public static Integer PORT = 9940;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
