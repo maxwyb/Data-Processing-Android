@@ -23,9 +23,11 @@ public class MainActivity extends AppCompatActivity {
     public static String temperature = ""; // a parsed String to send temperature data to server
     public static String result = ""; // the analysis result coming from server
 
-    public static String PC_IP = "131.179.30.195";
-    public static String ANDROID_IP = "131.179.45.16";
+    public static String PC_IP = "131.179.30.42";
+    public static String ANDROID_IP = "131.179.45.145";
     public static Integer PORT = 9940;
+
+    public static Integer todayInfo = 3; // for temperature data simulation: 0 for default, 1 for hot, 2 for cold, 3 for comfortable.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public void runSimulation(View view) {
         Log.d("sunnyDay", "Run button clicked.");
 
-        generateTemperature();
+        generateTemperature(todayInfo);
 
         // updating the temperature data generated on mobile UI
         String output = "Temperature data = ";
@@ -68,14 +70,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void generateTemperature() {
+    public static void generateTemperature(Integer todayInfo) {
         Random rand = new Random();
         int min = 0, max = 100;
+        if (todayInfo == 0) {
+            min = 0; max = 100;
+        } else if (todayInfo == 1) {
+            min = 68; max = 140;
+        } else if (todayInfo == 2) {
+            min = -22; max = 50;
+        } else if (todayInfo == 3) {
+            min = 50; max = 76;
+        } else {
+            Log.d("sunnyDay", "todayInfo is set with invalid value.");
+        }
+
         for (int i = 0; i < DATA_COUNT; i++) {
             num[i] = rand.nextInt(max - min + 1) + min;
         }
-
-
     }
 
     public static void sendDataToServer() {
