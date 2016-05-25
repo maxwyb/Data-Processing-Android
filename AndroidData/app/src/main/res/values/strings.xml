@@ -2,5 +2,5 @@
     <string name="app_name">Android Data</string>
     <string name="button_run">Run</string>
     <string name="button_data">Generate</string>
-    <string name="prompt_message">Hello Android!</string>
+    <string name="prompt_message">Hello Android! Please wait for about 3 seconds each time clicking "Run".</string>
 </resources>

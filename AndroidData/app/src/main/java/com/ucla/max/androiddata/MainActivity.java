@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static String result = ""; // the analysis result coming from server
 
     public static String PC_IP = "131.179.30.42";
-    public static String ANDROID_IP = "131.179.45.145";
+    public static String ANDROID_IP = "131.179.45.175";
     public static Integer PORT = 9940;
 
     public static Integer todayInfo = 0; // for temperature data simulation: 0 for default, 1 for hot, 2 for cold, 3 for comfortable.
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void runSimulation(View view) {
+        Log.d("sunnyDay", "Run button clicked.");
+
         generateTemperature();
 
         // updating the temperature data generated on mobile UI
@@ -53,12 +55,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d("sunnyDay", exception.getMessage());
         }
 
-        Log.d("sunnyDay", "Run button clicked.");
-
         sendDataToServer();
         receiveResultFromServer();
 
-        updateTextView2(result);
+//        updateTextView2(result);
     }
 
     // action for a button used to generate temperature data. Not useful anymore.
@@ -193,7 +193,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void receiveResultFromServer() {
-        new Thread() {
+
+        Thread t = new Thread() {
             public void run() {
 
                 // initailize a Socket. Here Android device is serve and PC is client.
@@ -243,8 +244,20 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("sunnyDay", exception.getMessage());
                 }
 
+                Log.d("sunnyDay", "receiveResultFromServer() thread finishes.");
             }
-        }.start();
+        };
+
+        t.start();
+        try {
+            // Block the main thread until thread t finishes, or after 3 seconds. Then update data analysis result.
+            t.join(3000);
+        } catch (InterruptedException ex) {
+            Log.d("sunnyDay", ex.getMessage());
+        }
+
+        Log.d("sunnyDay", "updateTextView2() is called.");
+        updateTextView2(result);
     }
 
 }
