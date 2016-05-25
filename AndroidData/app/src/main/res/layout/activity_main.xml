@@ -25,5 +25,14 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello Android!" />
+        android:text="@string/prompt_message"
+        android:scrollbars = "vertical" />
 </LinearLayout>
+
+<!--
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/button_data"
+android:onClick="getSensorData" />
+-->

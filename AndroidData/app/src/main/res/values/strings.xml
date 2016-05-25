@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Android Data</string>
     <string name="button_run">Run</string>
+    <string name="button_data">Generate</string>
+    <string name="prompt_message">Hello Android!</string>
 </resources>
