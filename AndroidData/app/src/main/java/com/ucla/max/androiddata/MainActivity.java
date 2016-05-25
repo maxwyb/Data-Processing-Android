@@ -3,6 +3,7 @@ package com.ucla.max.androiddata;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
     public static String temperature = ""; // a parsed String to send temperature data to server
     public static String result = ""; // the analysis result coming from server
 
-    public static String PC_IP = "131.179.30.195";
-    public static String ANDROID_IP = "131.179.45.16";
+    public static String PC_IP = "131.179.30.42";
+    public static String ANDROID_IP = "131.179.45.175";
     public static Integer PORT = 9940;
+
+    public static Integer todayInfo = 0; // for temperature data simulation: 0 for default, 1 for hot, 2 for cold, 3 for comfortable.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +58,38 @@ public class MainActivity extends AppCompatActivity {
         sendDataToServer();
         receiveResultFromServer();
 
-        updateTextView2(result);
+//        updateTextView2(result);
     }
 
+    // action for a button used to generate temperature data. Not useful anymore.
+    /*
+    public void getSensorData(View view) {
+
+        generateTemperature(todayInfo);
+
+        // updating the temperature data generated on mobile UI
+        String output = "Temperature data = ";
+        for (int i = 0; i < DATA_COUNT; i++) {
+            output += (num[i].toString() + ", ");
+        }
+        TextView textView1 = (TextView) findViewById(R.id.textView1);
+        try {
+            textView1.setText(output);
+        } catch (NullPointerException exception) {
+            Log.d("sunnyDay", exception.getMessage());
+        }
+    }
+    */
 
     public static void updateTextView2(String str) {
         TextView textView2 = (TextView) instance.findViewById(R.id.textView2);
+        // add vertical scrollbar to Text View
+        try {
+            textView2.setMovementMethod(new ScrollingMovementMethod());
+        } catch (NullPointerException exception) {
+            Log.d("sunnyDay", exception.getMessage());
+        }
+
         try {
             textView2.setText(str);
         } catch (NullPointerException exception) {
@@ -71,11 +100,26 @@ public class MainActivity extends AppCompatActivity {
     public static void generateTemperature() {
         Random rand = new Random();
         int min = 0, max = 100;
+        if (todayInfo == 0) {
+            min = 0; max = 100;
+        } else if (todayInfo == 1) {
+            min = 68; max = 140;
+        } else if (todayInfo == 2) {
+            min = -22; max = 50;
+        } else if (todayInfo == 3) {
+            min = 50; max = 76;
+        } else {
+            Log.d("sunnyDay", "todayInfo is set with invalid value.");
+        }
+
         for (int i = 0; i < DATA_COUNT; i++) {
             num[i] = rand.nextInt(max - min + 1) + min;
         }
 
-
+        // generate a different kind of temperature data next time
+        todayInfo++;
+        if (todayInfo > 3)
+            todayInfo -= 4;
     }
 
     public static void sendDataToServer() {
@@ -149,7 +193,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void receiveResultFromServer() {
-        new Thread() {
+
+        Thread t = new Thread() {
             public void run() {
 
                 // initailize a Socket. Here Android device is serve and PC is client.
@@ -198,8 +243,21 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException exception) {
                     Log.d("sunnyDay", exception.getMessage());
                 }
+
+                Log.d("sunnyDay", "receiveResultFromServer() thread finishes.");
             }
-        }.start();
+        };
+
+        t.start();
+        try {
+            // Block the main thread until thread t finishes, or after 3 seconds. Then update data analysis result.
+            t.join(3000);
+        } catch (InterruptedException ex) {
+            Log.d("sunnyDay", ex.getMessage());
+        }
+
+        Log.d("sunnyDay", "updateTextView2() is called.");
+        updateTextView2(result);
     }
 
 }
