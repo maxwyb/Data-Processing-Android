@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateTextView2(String str) {
         TextView textView2 = (TextView) instance.findViewById(R.id.textView2);
+        // add vertical scrollbar to Text View
         try {
             textView2.setMovementMethod(new ScrollingMovementMethod());
         } catch (NullPointerException exception) {
